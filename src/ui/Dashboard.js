@@ -136,7 +136,8 @@ function renderPlaceholder() {
         </div>
       </div>
       
-      <div class="placeholder-state">
+      <div class="placeholder-state" style="background-image: url('/images/dashboard-field.png')">
+        <div class="placeholder-bg-overlay"></div>
         <div class="placeholder-icon">🌿</div>
         <div class="placeholder-title">Ready to Analyze</div>
         <div class="placeholder-desc">

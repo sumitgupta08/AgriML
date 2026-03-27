@@ -36,7 +36,7 @@ function loginUser(email, name) {
     localStorage.setItem(AUTH_KEY, JSON.stringify({ loggedIn: true, user: { email, name }, loginAt: Date.now() }));
 }
 
-export function renderAuthPage(container, onSuccess) {
+export function renderAuthPage(container, onSuccess, onBackHome) {
     container.innerHTML = `
     <div class="auth-page">
       <!-- Animated Background -->
@@ -52,12 +52,12 @@ export function renderAuthPage(container, onSuccess) {
       </div>
 
       <div class="auth-card">
-        <!-- Logo -->
         <div class="auth-logo">
           <span class="auth-logo-icon">🌾</span>
           <div class="auth-logo-text">AgriML</div>
           <div class="auth-logo-sub">Intelligent Agricultural Decision Support</div>
         </div>
+        <a href="#" class="auth-back-link" id="auth-back-home">← Back to Home</a>
 
         <!-- Tab Toggle -->
         <div class="auth-tabs">
@@ -130,10 +130,10 @@ export function renderAuthPage(container, onSuccess) {
     </div>
   `;
 
-    wireAuth(container, onSuccess);
+    wireAuth(container, onSuccess, onBackHome);
 }
 
-function wireAuth(container, onSuccess) {
+function wireAuth(container, onSuccess, onBackHome) {
     const loginTab = container.querySelector('#tab-login');
     const signupTab = container.querySelector('#tab-signup');
     const loginForm = container.querySelector('#form-login');
@@ -153,6 +153,12 @@ function wireAuth(container, onSuccess) {
     signupTab.addEventListener('click', showSignup);
     container.querySelector('#switch-to-signup')?.addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
     container.querySelector('#switch-to-login')?.addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
+
+    // Back to home
+    const backBtn = container.querySelector('#auth-back-home');
+    if (backBtn && onBackHome) {
+      backBtn.addEventListener('click', (e) => { e.preventDefault(); onBackHome(); });
+    }
 
     // Password toggles
     container.querySelector('#toggle-login-pw')?.addEventListener('click', () => {

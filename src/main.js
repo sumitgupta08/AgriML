@@ -17,6 +17,7 @@ import { FeedbackLoop } from './ml/feedbackLoop.js';
 import { renderDashboard, updateResults, showTrainingOverlay, hideTrainingOverlay } from './ui/Dashboard.js';
 import { initCharts, updateCharts } from './ui/Charts.js';
 import { isLoggedIn, renderAuthPage, getCurrentUser, logout } from './ui/Auth.js';
+import { renderLandingPage } from './ui/LandingPage.js';
 
 // Global state
 const state = {
@@ -173,17 +174,33 @@ function initDashboard() {
   });
 }
 
-// Main entry — check auth first
-function init() {
+// Show landing page (public)
+function showLandingPage() {
   const app = document.getElementById('app');
+  renderLandingPage(app, () => {
+    // On login click, show auth page
+    showAuthPage();
+  });
+}
 
+// Show auth page
+function showAuthPage() {
+  const app = document.getElementById('app');
+  renderAuthPage(app, () => {
+    // On successful login/signup, transition to dashboard
+    setTimeout(() => initDashboard(), 100);
+  }, () => {
+    // On back to home
+    showLandingPage();
+  });
+}
+
+// Main entry — landing page is default
+function init() {
   if (isLoggedIn()) {
     initDashboard();
   } else {
-    renderAuthPage(app, () => {
-      // On successful login/signup, transition to dashboard
-      setTimeout(() => initDashboard(), 100);
-    });
+    showLandingPage();
   }
 }
 
