@@ -891,10 +891,20 @@ function renderHistoryPanel() {
               <span class="history-badge">#${history.length - i}</span>
             </div>
             <div class="history-card-body">
-              ${h.state ? `<div class="history-location-row">
+              <div class="history-location-row">
                 <span class="history-location-icon">📍</span>
-                <span class="history-location-text">${h.village ? h.village + ', ' : ''}${h.district ? h.district + ', ' : ''}${h.state}${h.soil ? ' • ' + h.soil + ' Soil' : ''}</span>
-              </div>` : ''}
+                <span class="history-loc-label">State:</span>
+                <span class="history-loc-val">${h.state || 'Not selected'}</span>
+                <span class="history-loc-sep">|</span>
+                <span class="history-loc-label">District:</span>
+                <span class="history-loc-val">${h.district || 'Not selected'}</span>
+                ${h.village ? `<span class="history-loc-sep">|</span>
+                <span class="history-loc-label">Village:</span>
+                <span class="history-loc-val">${h.village}</span>` : ''}
+                ${h.soil ? `<span class="history-loc-sep">|</span>
+                <span class="history-loc-label">Soil:</span>
+                <span class="history-loc-val">${h.soil}</span>` : ''}
+              </div>
               <div class="history-row">
                 <div class="history-item">
                   <span class="history-label">🌾 Fertilizer</span>

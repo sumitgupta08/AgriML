@@ -3483,3 +3483,24 @@ body::before {
   color: var(--clr-accent);
   font-weight: 600;
 }
+
+/* --- History Location Details --- */
+.history-loc-label {
+  font-size: 10px;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 2px;
+}
+
+.history-loc-val {
+  font-size: 11px;
+  color: var(--clr-text-primary);
+  font-weight: 600;
+}
+
+.history-loc-sep {
+  font-size: 10px;
+  color: var(--clr-border);
+  margin: 0 4px;
+}
