@@ -6,6 +6,7 @@ import { renderKnowledgePanel, wireKnowledgeTabs } from './Knowledge.js';
 import { renderLocationCard, wireLocationSelector } from './LocationSelector.js';
 
 let _handlers = {};
+const HISTORY_KEY = 'agriml_analysis_history';
 
 export function renderDashboard(container, cropTypes, handlers) {
   _handlers = handlers;
@@ -214,6 +215,7 @@ export function updateResults(result, appState) {
       <button class="tab-btn" data-tab="learning">🧠 Learning</button>
       <button class="tab-btn" data-tab="feedback">📝 Feedback</button>
       <button class="tab-btn" data-tab="knowledge">📖 Knowledge</button>
+      <button class="tab-btn" data-tab="history">📜 History</button>
     </div>
 
     <!-- TAB: Overview -->
@@ -256,6 +258,11 @@ export function updateResults(result, appState) {
       ${renderKnowledgePanel()}
     </div>
 
+    <!-- TAB: History -->
+    <div class="tab-panel" id="panel-history">
+      ${renderHistoryPanel()}
+    </div>
+
     <!-- Charts always visible at bottom -->
     <div class="charts-row" id="charts-row">
       <div class="chart-container"><div class="chart-title">📊 Soil Nutrient Profile</div><canvas id="chart-radar"></canvas></div>
@@ -271,6 +278,10 @@ export function updateResults(result, appState) {
   wireScenarioButtons(appState);
   wireFeedbackForm(appState);
   wireKnowledgeTabs();
+  wireHistoryPanel();
+
+  // Save this analysis to history
+  saveAnalysisToHistory(result);
 }
 
 // ==================== TAB NAVIGATION ====================
@@ -814,6 +825,113 @@ function wireFeedbackForm(appState) {
       document.getElementById('feedback-status').innerHTML = '<div class="alert alert-info"><span class="alert-icon">✅</span>Feedback submitted! The AI will use this to improve future predictions.</div>';
       submitBtn.disabled = true;
       submitBtn.textContent = '✅ Submitted';
+    });
+  }
+}
+
+// ==================== ANALYSIS HISTORY ====================
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch { return []; }
+}
+
+function saveAnalysisToHistory(result) {
+  const history = getHistory();
+  const { fertResult, yieldResult, optResult, sustainability } = result;
+
+  const entry = {
+    id: Date.now(),
+    date: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
+    crop: fertResult?.topFeatures?.[0]?.name || 'Unknown',
+    fertilizer: fertResult?.fertilizer || 'N/A',
+    confidence: fertResult?.confidence ? Math.round(fertResult.confidence * 100) : 0,
+    yield: yieldResult?.yield || 0,
+    quantity: optResult?.quantityPerHectare || 0,
+    totalQty: optResult?.totalQuantity || 0,
+    sustainability: sustainability?.overall || 0,
+    nitrogen: optResult?.n || 0,
+    phosphorus: optResult?.p || 0,
+    potassium: optResult?.k || 0,
+  };
+
+  history.unshift(entry); // newest first
+  if (history.length > 50) history.length = 50; // keep last 50
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+}
+
+function renderHistoryPanel() {
+  const history = getHistory();
+
+  if (history.length === 0) {
+    return `
+      <div class="history-empty">
+        <div class="history-empty-icon">📜</div>
+        <h3>No Analysis History</h3>
+        <p>Your past analysis results will appear here after you run <strong>Analyze & Recommend</strong>.</p>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="history-panel">
+      <div class="history-header">
+        <h3>📜 Analysis History <span class="history-count">${history.length} records</span></h3>
+        <button class="btn-clear-history" id="btn-clear-history">🗑️ Clear History</button>
+      </div>
+      <div class="history-list">
+        ${history.map((h, i) => `
+          <div class="history-card" data-index="${i}">
+            <div class="history-card-header">
+              <span class="history-date">${h.date}</span>
+              <span class="history-badge">#${history.length - i}</span>
+            </div>
+            <div class="history-card-body">
+              <div class="history-row">
+                <div class="history-item">
+                  <span class="history-label">🌾 Fertilizer</span>
+                  <span class="history-value">${h.fertilizer}</span>
+                </div>
+                <div class="history-item">
+                  <span class="history-label">🎯 Confidence</span>
+                  <span class="history-value">${h.confidence}%</span>
+                </div>
+              </div>
+              <div class="history-row">
+                <div class="history-item">
+                  <span class="history-label">📊 Predicted Yield</span>
+                  <span class="history-value">${h.yield} t/ha</span>
+                </div>
+                <div class="history-item">
+                  <span class="history-label">📦 Quantity</span>
+                  <span class="history-value">${h.quantity} kg/ha</span>
+                </div>
+              </div>
+              <div class="history-row">
+                <div class="history-item">
+                  <span class="history-label">🌿 Sustainability</span>
+                  <span class="history-value" style="color: ${h.sustainability >= 70 ? '#34d399' : h.sustainability >= 40 ? '#fbbf24' : '#ef4444'}">${h.sustainability}/100</span>
+                </div>
+                <div class="history-item">
+                  <span class="history-label">🧪 NPK</span>
+                  <span class="history-value" style="font-size:11px">${h.nitrogen}N / ${h.phosphorus}P / ${h.potassium}K</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function wireHistoryPanel() {
+  const clearBtn = document.getElementById('btn-clear-history');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Clear all analysis history? This cannot be undone.')) {
+        localStorage.removeItem(HISTORY_KEY);
+        const panel = document.getElementById('panel-history');
+        if (panel) panel.innerHTML = renderHistoryPanel();
+      }
     });
   }
 }

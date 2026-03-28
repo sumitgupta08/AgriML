@@ -19,6 +19,8 @@ export function renderLandingPage(container, onLoginClick) {
             <a href="#crops" class="landing-nav-link">Crops</a>
             <a href="#soils" class="landing-nav-link">Soils</a>
             <a href="#market" class="landing-nav-link">Market Rates</a>
+            <a href="#about" class="landing-nav-link">About Us</a>
+            <a href="#contact" class="landing-nav-link">Contact</a>
             <button class="landing-auth-btn" id="landing-login-btn">Login / Sign Up</button>
           </nav>
         </div>
@@ -217,6 +219,104 @@ export function renderLandingPage(container, onLoginClick) {
         </div>
       </section>
 
+      <!-- About Us -->
+      <section class="landing-section" id="about">
+        <div class="landing-section-inner">
+          <h2 class="section-heading">👥 About Us</h2>
+          <p class="section-intro">AgriML was built with a single mission — to empower Indian farmers with accessible, intelligent agricultural guidance.</p>
+          <div class="about-content">
+            <div class="about-card about-mission">
+              <div class="about-icon">🎯</div>
+              <h3>Our Mission</h3>
+              <p>To bridge the gap between modern agricultural science and the Indian farmer. We combine machine learning, soil science, and climate data to deliver personalized fertilizer recommendations that boost yields while protecting soil health for future generations.</p>
+            </div>
+            <div class="about-card about-how">
+              <div class="about-icon">🧠</div>
+              <h3>How It Works</h3>
+              <p>AgriML uses Random Forest classifiers and Gradient Boosting regressors trained on thousands of agricultural data points. Our AI analyzes your soil nutrients, climate conditions, and crop type to recommend the optimal fertilizer, predicted yield, and sustainability score — all running in your browser, with zero data collection.</p>
+            </div>
+            <div class="about-card about-why">
+              <div class="about-icon">🌍</div>
+              <h3>Why AgriML?</h3>
+              <p>Unlike generic agricultural portals, AgriML is built specifically for Indian farming conditions — covering all 28 states, 8 soil types, 15 agro-climatic zones, and 200+ crop varieties. It's 100% free, works offline, and requires no data sharing.</p>
+            </div>
+            <div class="about-card about-team">
+              <div class="about-icon">👨‍💻</div>
+              <h3>The Team</h3>
+              <p>Built by passionate technologists and agriculture enthusiasts who believe that smart farming is the key to India's food security. We're committed to making precision agriculture accessible to every farmer — from the fields of Punjab to the terraces of Nagaland.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Us -->
+      <section class="landing-section landing-section-alt" id="contact">
+        <div class="landing-section-inner">
+          <h2 class="section-heading">📬 Contact Us</h2>
+          <p class="section-intro">Have questions, feedback, or suggestions? We'd love to hear from you.</p>
+          <div class="contact-grid">
+            <div class="contact-form-card">
+              <form class="contact-form" id="contact-form">
+                <div class="contact-field">
+                  <label>Your Name</label>
+                  <input type="text" class="contact-input" id="contact-name" placeholder="Enter your name" required>
+                </div>
+                <div class="contact-field">
+                  <label>Email Address</label>
+                  <input type="email" class="contact-input" id="contact-email" placeholder="you@example.com" required>
+                </div>
+                <div class="contact-field">
+                  <label>Subject</label>
+                  <select class="contact-input" id="contact-subject">
+                    <option value="general">General Inquiry</option>
+                    <option value="feedback">Feedback / Suggestion</option>
+                    <option value="bug">Report a Bug</option>
+                    <option value="partnership">Partnership / Collaboration</option>
+                    <option value="data">Data & Research</option>
+                  </select>
+                </div>
+                <div class="contact-field">
+                  <label>Message</label>
+                  <textarea class="contact-input contact-textarea" id="contact-message" placeholder="Tell us what's on your mind..." rows="5" required></textarea>
+                </div>
+                <button type="submit" class="contact-submit">📤 Send Message</button>
+                <div id="contact-status"></div>
+              </form>
+            </div>
+            <div class="contact-info-card">
+              <div class="contact-info-item">
+                <span class="contact-info-icon">📧</span>
+                <div>
+                  <strong>Email</strong>
+                  <p>support@agriml.in</p>
+                </div>
+              </div>
+              <div class="contact-info-item">
+                <span class="contact-info-icon">📍</span>
+                <div>
+                  <strong>Location</strong>
+                  <p>India</p>
+                </div>
+              </div>
+              <div class="contact-info-item">
+                <span class="contact-info-icon">🕐</span>
+                <div>
+                  <strong>Response Time</strong>
+                  <p>Within 24-48 hours</p>
+                </div>
+              </div>
+              <div class="contact-info-item">
+                <span class="contact-info-icon">🌐</span>
+                <div>
+                  <strong>Open Source</strong>
+                  <p>github.com/2005Piyush/AgriML</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- CTA Section -->
       <section class="landing-cta-section">
         <div class="landing-cta-inner">
@@ -234,7 +334,9 @@ export function renderLandingPage(container, onLoginClick) {
             <p>Intelligent Agricultural Decision Support System</p>
           </div>
           <div class="footer-links">
-            <span>Built with ❤️ for Indian Farmers</span>
+            <a href="#about" class="footer-link">About Us</a>
+            <span>•</span>
+            <a href="#contact" class="footer-link">Contact</a>
             <span>•</span>
             <span>ML-Powered • Client-Side • Zero Data Collection</span>
           </div>
@@ -251,6 +353,17 @@ export function renderLandingPage(container, onLoginClick) {
   [loginBtn, heroBtn, ctaBtn].forEach(btn => {
     if (btn) btn.addEventListener('click', onLoginClick);
   });
+
+  // Contact form
+  const contactForm = container.querySelector('#contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const status = container.querySelector('#contact-status');
+      status.innerHTML = '<div style="color: var(--clr-accent); margin-top: 12px; font-size: 14px;">✅ Thank you! Your message has been received. We\'ll get back to you soon.</div>';
+      contactForm.reset();
+    });
+  }
 
   // Smooth scroll for nav links
   container.querySelectorAll('.landing-nav-link').forEach(link => {
