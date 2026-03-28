@@ -3,7 +3,7 @@
 
 import { WEATHER_ICONS } from '../ml/climateEngine.js';
 import { renderKnowledgePanel, wireKnowledgeTabs } from './Knowledge.js';
-import { renderLocationCard, wireLocationSelector } from './LocationSelector.js';
+import { renderLocationCard, wireLocationSelector, getCurrentLocation } from './LocationSelector.js';
 
 let _handlers = {};
 const HISTORY_KEY = 'agriml_analysis_history';
@@ -838,6 +838,8 @@ function saveAnalysisToHistory(result) {
   const history = getHistory();
   const { fertResult, yieldResult, optResult, sustainability } = result;
 
+  const loc = getCurrentLocation();
+
   const entry = {
     id: Date.now(),
     date: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
@@ -851,6 +853,10 @@ function saveAnalysisToHistory(result) {
     nitrogen: optResult?.n || 0,
     phosphorus: optResult?.p || 0,
     potassium: optResult?.k || 0,
+    state: loc.state || null,
+    district: loc.district || null,
+    village: loc.village || null,
+    soil: loc.soil || null,
   };
 
   history.unshift(entry); // newest first
@@ -885,6 +891,10 @@ function renderHistoryPanel() {
               <span class="history-badge">#${history.length - i}</span>
             </div>
             <div class="history-card-body">
+              ${h.state ? `<div class="history-location-row">
+                <span class="history-location-icon">📍</span>
+                <span class="history-location-text">${h.village ? h.village + ', ' : ''}${h.district ? h.district + ', ' : ''}${h.state}${h.soil ? ' • ' + h.soil + ' Soil' : ''}</span>
+              </div>` : ''}
               <div class="history-row">
                 <div class="history-item">
                   <span class="history-label">🌾 Fertilizer</span>

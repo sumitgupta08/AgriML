@@ -8,6 +8,10 @@ let _currentDistrict = null;
 let _currentVillage = null;
 let _currentSoil = null;
 
+export function getCurrentLocation() {
+  return { state: _currentState, district: _currentDistrict, village: _currentVillage, soil: _currentSoil };
+}
+
 export function renderLocationCard() {
   const stateOptions = Object.keys(INDIA_STATES).sort()
     .map(s => `<option value="${s}">${s}</option>`).join('');
