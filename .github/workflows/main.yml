@@ -1,32 +1,26 @@
 name: AgriML CI-CD Pipeline
 
-# This triggers the pipeline on every push to the main branch
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    # Log in to Docker Hub using the secrets you just created
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.sumitgupta89}}
-        password: ${{ secrets.dckr_pat_myAyMnArSFcLZ5RwvUEMZmYN2Ik}}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: sumitgupta89
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # Build and push the Docker image
-    - name: Build and Push Docker Image
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        push: true
-        tags: ${{ secrets.sumitgupta89 }}/agriml:latest
-
-    - name: Verify Deployment
-      run: echo "The AgriML image has been successfully built and pushed!"
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: sumitgupta89/agriml:latest
