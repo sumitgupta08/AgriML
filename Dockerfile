@@ -1,20 +1,15 @@
-# Use a lightweight Python image
-FROM python:3.9-slim
+FROM node:18
 
-# Set the working directory
 WORKDIR /app
 
-# Copy your requirements file first to optimize the build
-COPY requirements.txt .
+COPY package*.json ./
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN npm install
 
-# Copy all your project files into the container
 COPY . .
 
-# Expose the port (Vercel projects often use 3000 or 5000)
-EXPOSE 5000
+RUN npm run build
 
-# Start your application
-CMD ["python", "app.py"]
+EXPOSE 5173
+
+CMD ["npm", "run", "preview"]
