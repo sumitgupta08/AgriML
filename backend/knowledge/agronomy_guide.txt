@@ -1,0 +1,20 @@
+[WHEAT IRRIGATION & WATER MANAGEMENT]
+Optimal soil moisture for wheat ranges between 45% and 65%. 
+If soil moisture drops below 30% during the crown root initiation (CRI) or flowering stage, schedule immediate irrigation within 24 hours.
+Avoid flood irrigation if rainfall forecast exceeds 25mm in the next 48 hours to prevent waterlogging and root rot.
+
+[RICE WATER & NUTRIENT MANAGEMENT]
+Rice is semi-aquatic and requires high soil moisture, ideally maintained between 70% and 85%.
+If soil moisture falls below 50%, water stress occurs, leading to reduced tillering.
+Apply Nitrogen in split doses: basal, active tillering, and panicle initiation. 
+Avoid urea application when rainfall is imminent to minimize fertilizer runoff and leaching.
+
+[SOIL pH & NUTRIENT AVAILABILITY]
+Soil pH between 6.0 and 7.5 provides optimal nutrient uptake for most cereal crops.
+When pH is below 5.5 (strongly acidic), phosphorus fixation occurs, making P unavailable to plants. Apply agricultural lime (calcium carbonate).
+When pH exceeds 8.0 (alkaline), zinc and iron micronutrient deficiencies are common. Apply gypsum or elemental sulfur.
+
+[NPK DEFICIENCY IDENTIFICATION]
+Nitrogen (N) deficiency appears as yellowing (chlorosis) of older, lower leaves while younger leaves stay green.
+Phosphorus (P) deficiency causes dark green leaves with purplish or reddish discoloration along leaf margins.
+Potassium (K) deficiency results in marginal leaf scorch, yellowing of leaf tips, and weak stalk strength.
