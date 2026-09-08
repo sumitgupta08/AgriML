@@ -3743,3 +3743,31 @@ select:focus, input:focus {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
 }
+
+/* Header navigation home button */
+.btn-nav-home:hover {
+  background: #10b981 !important;
+  color: #041209 !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+.btn-nav-reset:hover {
+  border-color: #64748b !important;
+  color: #f8fafc !important;
+}
+
+/* Fix sticky/floating overlap on sidebar */
+.sidebar {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  overflow-y: auto !important;
+  max-height: calc(100vh - 85px) !important;
+  padding-bottom: 2rem !important;
+}
+
+/* Ensure actions container scrolls naturally with form */
+.dashboard-actions-card {
+  position: static !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
