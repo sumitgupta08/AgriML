@@ -3612,3 +3612,134 @@ select:focus, input:focus {
   border: 1px solid rgba(16, 185, 129, 0.2);
   background: #0b1711;
 }
+
+/* ================= Auth Page / Modal Polish ================= */
+
+/* Clean center container */
+.auth-container, .auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #0d2818 0%, #050d09 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+/* Remove or fix floating stray glows */
+.auth-glow, .auth-backdrop-filter, .auth-container::before {
+  display: none !important;
+}
+
+/* Modern Glassmorphic Auth Card */
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(13, 27, 20, 0.85) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  border-radius: 16px !important;
+  padding: 2rem !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.1);
+  position: relative;
+  z-index: 10;
+}
+
+/* Tab Switcher (Login / Sign Up) */
+.auth-tabs {
+  display: flex;
+  background: #08140e;
+  padding: 4px;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #1a3828;
+}
+
+.auth-tab-btn {
+  flex: 1;
+  padding: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.auth-tab-btn.active {
+  background: #10b981 !important;
+  color: #05140b !important;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+/* Input Fields */
+.auth-input-group {
+  margin-bottom: 1.2rem;
+}
+
+.auth-input-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+}
+
+.auth-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 1rem;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.auth-input {
+  width: 100%;
+  background: #091710 !important;
+  border: 1px solid #1e3a2b !important;
+  color: #f8fafc !important;
+  border-radius: 10px !important;
+  padding: 12px 14px 12px 42px !important;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.auth-input:focus {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+  background: #0d2117 !important;
+}
+
+/* Primary CTA Button */
+.auth-btn-submit {
+  width: 100%;
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+  padding: 13px !important;
+  border-radius: 10px !important;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+}
