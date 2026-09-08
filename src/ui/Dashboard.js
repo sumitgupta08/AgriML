@@ -48,7 +48,6 @@ export function renderDashboard(container, cropTypes, handlers) {
   wireForm(container, handlers);
   wireLocationSelector(container);
 
-  // Wire logout
   const logoutBtn = container.querySelector('#btn-logout');
   if (logoutBtn && handlers.onLogout) {
     logoutBtn.addEventListener('click', handlers.onLogout);
@@ -120,11 +119,11 @@ function renderInputForm(cropTypes) {
       </div>
     </div>
 
-    <div class="analyze-bar-container" style="display:flex; flex-direction:column; gap:10px; margin-top:12px;">
-      <button class="btn-primary" id="btn-sensor" type="button" style="background:#0284c7; width:100%; justify-content:center;">
+    <div class="card dashboard-actions-card" style="display: flex; flex-direction: column; gap: 12px; padding: 14px;">
+      <button class="btn-primary" id="btn-sensor" type="button" style="background: linear-gradient(135deg, #0284c7, #0369a1); width: 100%; justify-content: center; box-shadow: 0 4px 14px rgba(2,132,199,0.3);">
         📡 Use Live Sensor Data
       </button>
-      <button class="btn-primary" id="btn-analyze" type="button" style="width:100%; justify-content:center;">
+      <button class="btn-primary" id="btn-analyze" type="button" style="width: 100%; justify-content: center;">
         🔬 Analyze & Recommend
       </button>
     </div>
@@ -133,21 +132,23 @@ function renderInputForm(cropTypes) {
 
 function renderPlaceholder() {
   return `
-    <div class="placeholder-container">
-      <div class="animated-quote-container">
+    <div class="placeholder-container" style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <div class="animated-quote-container" style="background: rgba(15,29,22,0.6); padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid rgba(16,185,129,0.2);">
         <div class="quote-slider">
-          <div class="quote-slide">"To plant a garden is to believe in tomorrow."<br/><span>- Audrey Hepburn</span></div>
-          <div class="quote-slide">"Farming is a profession of hope."<br/><span>- Brian Brett</span></div>
-          <div class="quote-slide">"Agriculture is our wisest pursuit, because it will in the end contribute most to real wealth, good morals & happiness."<br/><span>- Thomas Jefferson</span></div>
+          <div class="quote-slide" style="font-style: italic; color: #a7f3d0;">
+            "Farming is a profession of hope." <span style="font-size: 0.85em; color: #6ee7b7; font-weight: bold;">— Brian Brett</span>
+          </div>
         </div>
       </div>
       
-      <div class="placeholder-state" style="background-image: url('/images/dashboard-field.png')">
-        <div class="placeholder-bg-overlay"></div>
-        <div class="placeholder-icon">🌿</div>
-        <div class="placeholder-title">Ready to Analyze</div>
-        <div class="placeholder-desc">
-          Adjust soil nutrients, environmental conditions, and crop type, then click <strong>Analyze & Recommend</strong> to get AI-powered recommendations with risk analysis, sustainability scoring, and scenario simulation.
+      <div class="placeholder-state" style="background-image: url('/images/dashboard-field.png'); min-height: 420px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 16px; border: 1px solid rgba(16,185,129,0.15); position: relative; overflow: hidden; text-align: center; padding: 2rem;">
+        <div class="placeholder-bg-overlay" style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(5,15,10,0.7), rgba(5,15,10,0.92)); z-index: 1;"></div>
+        <div style="position: relative; z-index: 2; max-width: 600px;">
+          <div class="placeholder-icon" style="font-size: 3rem; margin-bottom: 0.5rem;">🌿</div>
+          <div class="placeholder-title" style="font-size: 1.8rem; font-weight: 700; color: #ffffff; margin-bottom: 0.75rem;">Ready to Analyze</div>
+          <div class="placeholder-desc" style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6;">
+            Adjust soil nutrients, environmental conditions, and crop parameters on the left, then click <strong style="color: #34d399;">Analyze & Recommend</strong> to launch AI-driven yield optimization, climate risk analysis, and agronomic agent reasoning.
+          </div>
         </div>
       </div>
     </div>
@@ -180,7 +181,7 @@ function wireForm(container, handlers) {
     sensorBtn.addEventListener('click', async () => {
       sensorBtn.disabled = true;
       const originalText = sensorBtn.textContent;
-      sensorBtn.textContent = '📡 Loading Sensor Data...';
+      sensorBtn.textContent = '📡 Loading Telemetry...';
 
       try {
         const sensorData = await handlers.onLoadSensorData();
@@ -345,11 +346,9 @@ export function updateResults(result, appState) {
   wireKnowledgeTabs();
   wireHistoryPanel();
 
-  // Save this analysis to history
   saveAnalysisToHistory(result);
 }
 
-// ==================== TAB NAVIGATION ====================
 function wireTabNav() {
   const tabBtns = document.querySelectorAll('.tab-btn');
   tabBtns.forEach(btn => {
@@ -363,10 +362,8 @@ function wireTabNav() {
   });
 }
 
-// ==================== OVERVIEW PANEL ====================
 function renderOverviewPanel(fertResult, yieldResult, optResult, explanations, alertIcons) {
   return `
-    <!-- AI Agent Decision Card Mount Point -->
     <div id="agent-decision-box"></div>
 
     <div class="results-row">
@@ -415,7 +412,7 @@ function renderOverviewPanel(fertResult, yieldResult, optResult, explanations, a
     ${optResult.alerts.length > 0 ? `
     <div class="card"><div class="card-title"><span class="card-title-icon">🔔</span> Alerts</div>
       <div class="alerts-container">
-        ${optResult.alerts.map((a, i) => `<div class="alert alert-${a.level}"><span class="alert-icon">${alertIcons[a.level] || 'ℹ️'}</span><span>${a.message}</span></div>`).join('')}
+        ${optResult.alerts.map(a => `<div class="alert alert-${a.level}"><span class="alert-icon">${alertIcons[a.level] || 'ℹ️'}</span><span>${a.message}</span></div>`).join('')}
       </div>
     </div>` : ''}
 
@@ -427,7 +424,6 @@ function renderOverviewPanel(fertResult, yieldResult, optResult, explanations, a
   `;
 }
 
-// ==================== CLIMATE PANEL ====================
 function renderClimatePanel(climateImpact) {
   if (!climateImpact) return '<div class="card"><p>Climate data unavailable.</p></div>';
 
@@ -484,7 +480,6 @@ function renderClimatePanel(climateImpact) {
   `;
 }
 
-// ==================== RISKS PANEL ====================
 function renderRisksPanel(risks) {
   if (!risks) return '<div class="card"><p>Risk data unavailable.</p></div>';
 
@@ -528,7 +523,6 @@ function renderRisksPanel(risks) {
   `;
 }
 
-// ==================== SUSTAINABILITY PANEL ====================
 function renderSustainabilityPanel(sustainability) {
   if (!sustainability) return '<div class="card"><p>Sustainability data unavailable.</p></div>';
 
@@ -584,7 +578,6 @@ function renderSustainabilityPanel(sustainability) {
   `;
 }
 
-// ==================== SCENARIOS PANEL ====================
 function renderScenariosPanel(appState) {
   const sim = appState?.scenarioSimulator;
   const lastInput = appState?.lastInput;
@@ -704,7 +697,6 @@ function renderScenarioResult(result) {
   `;
 }
 
-// ==================== LEARNING PANEL ====================
 function renderLearningPanel(learningStats, soilDegradation, feedbackStats) {
   return `
     <div class="card">
@@ -770,7 +762,6 @@ function renderLearningPanel(learningStats, soilDegradation, feedbackStats) {
   `;
 }
 
-// ==================== FEEDBACK PANEL ====================
 function renderFeedbackPanel(fertResult, yieldResult, appState) {
   const feedbackStats = appState?.feedbackLoop?.getStats();
   const entries = appState?.feedbackLoop?.getEntries()?.slice(0, 5) || [];
@@ -897,7 +888,6 @@ function wireFeedbackForm(appState) {
   }
 }
 
-// ==================== ANALYSIS HISTORY ====================
 function getHistory() {
   try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch { return []; }
 }
