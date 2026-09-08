@@ -307,7 +307,15 @@ function initDashboard() {
     onFeedback: handleFeedback,
     getState: () => state,
     user,
-    onLogout: logout
+    onLogout: logout,
+    // Add Home navigation handler
+    onNavigateHome: () => {
+      showLandingPage();
+    },
+    // Reset dashboard state to placeholder view
+    onResetDashboard: () => {
+      initDashboard();
+    }
   });
 
   initCharts();

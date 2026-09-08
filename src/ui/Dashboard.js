@@ -20,13 +20,19 @@ export function renderDashboard(container, cropTypes, handlers) {
 
     <header class="header">
       <div class="header-left">
-        <span class="header-logo">🌾</span>
+        <span class="header-logo" id="logo-home" style="cursor:pointer;" title="Go to Home">🌾</span>
         <div>
-          <div class="header-title">AgriML</div>
+          <div class="header-title" id="title-home" style="cursor:pointer;">AgriML</div>
           <div class="header-subtitle">Intelligent Agricultural Decision Support System</div>
         </div>
       </div>
-      <div class="header-status">
+      <div class="header-status" style="display:flex; align-items:center; gap:10px;">
+        <button class="btn-nav-home" id="btn-nav-home" style="background:#0f2d1e; border:1px solid #10b981; color:#34d399; padding:6px 14px; border-radius:8px; cursor:pointer; font-weight:600; font-size:13px; display:flex; align-items:center; gap:6px;">
+          🏠 Home
+        </button>
+        <button class="btn-nav-reset" id="btn-nav-reset" style="background:transparent; border:1px solid #334155; color:#94a3b8; padding:6px 12px; border-radius:8px; cursor:pointer; font-size:13px; display:flex; align-items:center; gap:6px;">
+          🔄 New Analysis
+        </button>
         ${handlers.user ? `<span class="header-user">👤 ${handlers.user.name || handlers.user.email}</span>` : ''}
         ${handlers.onLogout ? `<button class="btn-logout" id="btn-logout">Logout</button>` : ''}
         <span class="status-dot"></span>
@@ -48,6 +54,18 @@ export function renderDashboard(container, cropTypes, handlers) {
   wireForm(container, handlers);
   wireLocationSelector(container);
 
+  // Wire Home & Navigation buttons
+  const homeBtn = container.querySelector('#btn-nav-home');
+  const logoHome = container.querySelector('#logo-home');
+  const titleHome = container.querySelector('#title-home');
+  const resetBtn = container.querySelector('#btn-nav-reset');
+
+  if (homeBtn && handlers.onNavigateHome) homeBtn.addEventListener('click', handlers.onNavigateHome);
+  if (logoHome && handlers.onNavigateHome) logoHome.addEventListener('click', handlers.onNavigateHome);
+  if (titleHome && handlers.onNavigateHome) titleHome.addEventListener('click', handlers.onNavigateHome);
+  if (resetBtn && handlers.onResetDashboard) resetBtn.addEventListener('click', handlers.onResetDashboard);
+
+  // Wire logout
   const logoutBtn = container.querySelector('#btn-logout');
   if (logoutBtn && handlers.onLogout) {
     logoutBtn.addEventListener('click', handlers.onLogout);
@@ -119,11 +137,11 @@ function renderInputForm(cropTypes) {
       </div>
     </div>
 
-    <div class="card dashboard-actions-card" style="display: flex; flex-direction: column; gap: 12px; padding: 14px;">
-      <button class="btn-primary" id="btn-sensor" type="button" style="background: linear-gradient(135deg, #0284c7, #0369a1); width: 100%; justify-content: center; box-shadow: 0 4px 14px rgba(2,132,199,0.3);">
+    <div class="card dashboard-actions-card" style="display:flex; flex-direction:column; gap:12px; padding:14px; position:static;">
+      <button class="btn-primary" id="btn-sensor" type="button" style="background:linear-gradient(135deg, #0284c7, #0369a1); width:100%; justify-content:center; box-shadow:0 4px 14px rgba(2,132,199,0.3);">
         📡 Use Live Sensor Data
       </button>
-      <button class="btn-primary" id="btn-analyze" type="button" style="width: 100%; justify-content: center;">
+      <button class="btn-primary" id="btn-analyze" type="button" style="width:100%; justify-content:center;">
         🔬 Analyze & Recommend
       </button>
     </div>
@@ -132,22 +150,22 @@ function renderInputForm(cropTypes) {
 
 function renderPlaceholder() {
   return `
-    <div class="placeholder-container" style="display: flex; flex-direction: column; gap: 1.5rem;">
-      <div class="animated-quote-container" style="background: rgba(15,29,22,0.6); padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid rgba(16,185,129,0.2);">
+    <div class="placeholder-container" style="display:flex; flex-direction:column; gap:1.5rem;">
+      <div class="animated-quote-container" style="background:rgba(15,29,22,0.6); padding:1rem 1.5rem; border-radius:12px; border:1px solid rgba(16,185,129,0.2);">
         <div class="quote-slider">
-          <div class="quote-slide" style="font-style: italic; color: #a7f3d0;">
-            "Farming is a profession of hope." <span style="font-size: 0.85em; color: #6ee7b7; font-weight: bold;">— Brian Brett</span>
+          <div class="quote-slide" style="font-style:italic; color:#a7f3d0;">
+            "Farming is a profession of hope." <span style="font-size:0.85em; color:#6ee7b7; font-weight:bold;">— Brian Brett</span>
           </div>
         </div>
       </div>
       
-      <div class="placeholder-state" style="background-image: url('/images/dashboard-field.png'); min-height: 420px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 16px; border: 1px solid rgba(16,185,129,0.15); position: relative; overflow: hidden; text-align: center; padding: 2rem;">
-        <div class="placeholder-bg-overlay" style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(5,15,10,0.7), rgba(5,15,10,0.92)); z-index: 1;"></div>
-        <div style="position: relative; z-index: 2; max-width: 600px;">
-          <div class="placeholder-icon" style="font-size: 3rem; margin-bottom: 0.5rem;">🌿</div>
-          <div class="placeholder-title" style="font-size: 1.8rem; font-weight: 700; color: #ffffff; margin-bottom: 0.75rem;">Ready to Analyze</div>
-          <div class="placeholder-desc" style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6;">
-            Adjust soil nutrients, environmental conditions, and crop parameters on the left, then click <strong style="color: #34d399;">Analyze & Recommend</strong> to launch AI-driven yield optimization, climate risk analysis, and agronomic agent reasoning.
+      <div class="placeholder-state" style="background-image:url('/images/dashboard-field.png'); min-height:420px; display:flex; flex-direction:column; justify-content:center; align-items:center; border-radius:16px; border:1px solid rgba(16,185,129,0.15); position:relative; overflow:hidden; text-align:center; padding:2rem;">
+        <div class="placeholder-bg-overlay" style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(5,15,10,0.7), rgba(5,15,10,0.92)); z-index:1;"></div>
+        <div style="position:relative; z-index:2; max-width:600px;">
+          <div class="placeholder-icon" style="font-size:3rem; margin-bottom:0.5rem;">🌿</div>
+          <div class="placeholder-title" style="font-size:1.8rem; font-weight:700; color:#ffffff; margin-bottom:0.75rem;">Ready to Analyze</div>
+          <div class="placeholder-desc" style="color:#94a3b8; font-size:0.95rem; line-height:1.6;">
+            Adjust soil nutrients, environmental conditions, and crop parameters on the left, then click <strong style="color:#34d399;">Analyze & Recommend</strong> to launch AI-driven yield optimization, climate risk analysis, and agronomic agent reasoning.
           </div>
         </div>
       </div>
